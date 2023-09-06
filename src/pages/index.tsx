@@ -1,12 +1,19 @@
 import { ProductInput } from "@/types/productsInput";
 import { parseCSV } from "@/utils/parseCSV";
 import Head from "next/head";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from '@/styles/home.module.scss';
+import { validateProducts } from "@/services/productsApi";
 
 export default function Home() {
   const [data, setData] = useState<ProductInput[]>([]);
   const [selectedFile, setSelectedFile] = useState('');
+  const [disableButton, setDisabledButton] = useState(true);
+
+  async function validateData() {
+    const result = await validateProducts(data);
+    console.log(result);
+  }
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const fileInput = e.target;
@@ -17,6 +24,7 @@ export default function Home() {
       if (result) {
         console.log(result)
         setData(result);
+        setDisabledButton(false);
       }
     } else {
       console.error('Nenhum arquivo selecionado.');
@@ -28,21 +36,25 @@ export default function Home() {
       <Head>
         <title>Shopper - Compras inteligentes. Vida Inteligente</title>
       </Head>
-      <div className={styles.custom_container}>
-        <label htmlFor="file-input">
-          Escolher Arquivo CSV
-        </label>
-        <input
-          type="file"
-          id="file-input"
-          accept=".csv"
-          onChange={handleFileUpload}
-        />
-        <div>Arquivo selecionado:{selectedFile}</div>
-        <button>
-          Validar dados
-        </button>
-      </div>
+      <main>
+        <div className={styles.custom_container}>
+          <div>
+            <label htmlFor="file-input" title="Clique aqui para escolher um arquivo CSV">
+              Escolher Arquivo CSV
+            </label>
+            <input
+              type="file"
+              id="file-input"
+              accept=".csv"
+              onChange={handleFileUpload}
+            />
+            <h1>{selectedFile ? selectedFile : 'Nenhum arquivo selecionado!'}</h1>
+          </div>
+          <button disabled={disableButton} onClick={validateData}>
+            Validar dados
+          </button>
+        </div>
+      </main>
     </>
   )
 }

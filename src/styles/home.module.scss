@@ -1,16 +1,39 @@
 .custom_container {
-  padding: 20px;
+  padding: 1.5rem;
   border-radius: 8px;
   text-align: center;
-  label {
-    background-color: #60AD77;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7rem;
+  h1 {
+    padding-top: 0.3rem;
+    position: absolute;
+  }
+
+  label,
+  button {
+    background-color: #60ad77;
     border-radius: 5px;
     color: #fff;
     cursor: pointer;
     margin: 10px;
-    padding: 6px 20px
+    padding: 6px 20px;
+    height: 40px;
+    width: 200px;
+    border: none;
+
+    &:hover {
+      background-color: #69d389;
+    }
+
+    &:disabled {
+      background-color: #919191;
+      cursor: auto;
+    }
   }
-  input[type='file'] {
-    display: none
+
+  input[type="file"] {
+    display: none;
   }
 }
