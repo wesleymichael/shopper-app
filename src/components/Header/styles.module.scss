@@ -1,0 +1,18 @@
+.headerContainer {
+  height: 5rem;
+  background-color: #1E2044;
+}
+
+.headerContext {
+  max-width: 1120px;
+  height: 5rem;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: azure;
+  h1{
+    font-size: 3rem;
+  }
+}
