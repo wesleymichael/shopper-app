@@ -5,6 +5,7 @@ import { parseCSV } from "@/utils/parseCSV";
 import { useState } from "react";
 import Head from "next/head";
 import { RenderItems } from "@/components/Item";
+import { toast } from "react-toastify";
 
 export default function Home() {
   const [outputValidate, setOutputValidate] = useState<ValidateOutput[]>([]);
@@ -26,15 +27,17 @@ export default function Home() {
   }
 
   async function updateData() {
+    setDisabledButtonUpdate(true);
     const data = outputValidate.map((product) => ({
       code: product.code,
       variation: product.new_price / product.current_price,
     }));
-    console.log(data);
+    
     await server.updateProducts(data);
-    alert('Atualizado com sucesso');
+    toast('Dados atualizado com sucesso!');
     try {
     } catch (error) {
+      toast('Erro ao atualizar os dados!');
       console.log(error);
     }
   }
