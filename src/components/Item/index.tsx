@@ -5,9 +5,9 @@ interface RenderItemsProps {
   outputValidate: ValidateOutput[];
 }
 
-export function RenderItems({outputValidate}: RenderItemsProps) {
+export function RenderItems({ outputValidate }: RenderItemsProps) {
   return (
-    <>
+    <div className={styles.table_container}>
       <table className={styles.custom_table}>
         <thead>
           <tr>
@@ -20,9 +20,11 @@ export function RenderItems({outputValidate}: RenderItemsProps) {
         </thead>
         <tbody>
           {outputValidate.map((productValidate) => (
-            <tr 
+            <tr
               key={productValidate.code}
-              className={productValidate.error.length > 0 ? styles.error_row : ''}
+              className={
+                productValidate.error.length > 0 ? styles.error_row : ''
+              }
             >
               <td>{productValidate.code}</td>
               <td>{productValidate.name}</td>
@@ -39,6 +41,6 @@ export function RenderItems({outputValidate}: RenderItemsProps) {
           ))}
         </tbody>
       </table>
-    </>
-  )
+    </div>
+  );
 }

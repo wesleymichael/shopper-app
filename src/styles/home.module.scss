@@ -6,9 +6,9 @@
   align-items: center;
   justify-content: center;
   gap: 7rem;
-  h1 {
+
+  p {
     padding-top: 0.3rem;
-    position: absolute;
   }
 
   label,
@@ -39,9 +39,34 @@
 }
 
 .custom_products_container {
-  margin: 0 auto;
-  overflow-y: auto;
-  overflow-x: auto;
   display: flex;
   justify-content: center;
+}
+
+.container_button_update {
+  width: 100%;
+  margin-bottom: 2rem;
+  position: fixed;
+  bottom: 0;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custon_button_update {
+  background-color: #60ad77;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  margin: 10px;
+  padding: 6px 20px;
+  height: 40px;
+  width: 200px;
+  border: none;
+
+  &:disabled {
+    background-color: #919191;
+    cursor: auto;
+  }
 }

@@ -10,11 +10,23 @@ export default function Home() {
   const [outputValidate, setOutputValidate] = useState<ValidateOutput[]>([]);
   const [data, setData] = useState<ProductInput[]>([]);
   const [selectedFile, setSelectedFile] = useState('');
-  const [disableButton, setDisabledButton] = useState(true);
+  const [disableButtonValidate, setDisabledButtonValidate] = useState(true);
+  const [disableButtonUpdate, setDisabledButtonUpdate] = useState(true);
 
   async function validateData() {
-    const result = await validateProducts(data);
+    const result = await validateProducts(data) as ValidateOutput[];
     setOutputValidate(result);
+    
+    result.forEach((product) => {
+      if(product.error.length > 0) {
+        return;
+      }
+    });
+    setDisabledButtonUpdate(false);
+  }
+
+  async function updateData() {
+    //TODO
   }
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -25,7 +37,7 @@ export default function Home() {
       const result = await parseCSV(file);
       if (result) {
         setData(result);
-        setDisabledButton(false);
+        setDisabledButtonValidate(false);
       }
     } else {
       console.error('Nenhum arquivo selecionado.');
@@ -49,9 +61,9 @@ export default function Home() {
               accept=".csv"
               onChange={handleFileUpload}
             />
-            <h1>{selectedFile ? selectedFile : 'Nenhum arquivo selecionado!'}</h1>
+            <p>{selectedFile ? selectedFile : 'Nenhum arquivo selecionado!'}</p>
           </div>
-          <button disabled={disableButton} onClick={validateData}>
+          <button disabled={disableButtonValidate} onClick={validateData}>
             Validar dados
           </button>
         </div>
@@ -60,6 +72,12 @@ export default function Home() {
           {outputValidate.length !== 0 && (
             <RenderItems outputValidate={outputValidate} />
           )}
+        </div>
+
+        <div className={styles.container_button_update}>
+          <button className={styles.custon_button_update} onClick={updateData} disabled={disableButtonUpdate}>
+            Atualizar dados
+          </button>
         </div>
       </main>
     </>
