@@ -61,7 +61,7 @@ export default function Home() {
   
     if (file) {
       setSelectedFile(file.name);
-      fileInput.value = ''; // Limpar o valor do elemento de entrada de arquivo
+      fileInput.value = '';
       const result = await parseCSV(file);
       if (result) {
         setData(result);

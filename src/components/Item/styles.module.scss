@@ -1,5 +1,5 @@
 .table_container {
-  max-height: 500px;
+  max-height: 55vh;
   overflow-y: auto;
   overflow-x: hidden;
   margin: 0 2rem;
@@ -9,6 +9,13 @@
   width: 100%;
   border-collapse: collapse;
   border: 1px solid #ccc;
+  position: relative;
+
+  thead {
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+  }
 }
 
 .custom_table th {
