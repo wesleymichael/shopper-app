@@ -1,11 +1,12 @@
-import { ProductInput, ValidateOutput } from "@/types/productsInput";
-import * as server from "@/services/productsApi";
-import styles from '@/styles/home.module.scss';
-import { parseCSV } from "@/utils/parseCSV";
-import { useState } from "react";
 import Head from "next/head";
-import { RenderItems } from "@/components/Item";
+import { useState } from "react";
 import { toast } from "react-toastify";
+import { BsTrash } from 'react-icons/bs';
+import { parseCSV } from "@/utils/parseCSV";
+import styles from '@/styles/home.module.scss';
+import { RenderItems } from "@/components/Item";
+import * as server from "@/services/productsApi";
+import { ProductInput, ValidateOutput } from "@/types/productsInput";
 
 export default function Home() {
   const [outputValidate, setOutputValidate] = useState<ValidateOutput[]>([]);
@@ -17,22 +18,25 @@ export default function Home() {
   async function validateData() {
     const result = await server.validateProducts(data) as ValidateOutput[];
     setOutputValidate(result);
+    let hasError = false;
 
-    result.forEach((product) => {
-      if(product.error.length > 0) {
-        return;
+    for (const product of result) {
+      if (product.error.length > 0) {
+        hasError = true;
+        break;
       }
-    });
-    setDisabledButtonUpdate(false);
+    }
+    setDisabledButtonUpdate(hasError);
   }
 
   async function updateData() {
     setDisabledButtonUpdate(true);
+    setDisabledButtonValidate(true);
     const data = outputValidate.map((product) => ({
       code: product.code,
       variation: product.new_price / product.current_price,
     }));
-    
+
     await server.updateProducts(data);
     toast('Dados atualizado com sucesso!');
     try {
@@ -42,11 +46,22 @@ export default function Home() {
     }
   }
 
+  function clean() {
+    setOutputValidate([]);
+    setData([]);
+    setDisabledButtonUpdate(true);
+    setDisabledButtonValidate(true);
+    setSelectedFile('');
+  }
+  
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    clean();
     const fileInput = e.target;
-    if (fileInput.files && fileInput.files.length > 0) {
-      const file = fileInput.files[0];
+    const file = fileInput.files && fileInput.files.length > 0 ? fileInput.files[0] : null;
+  
+    if (file) {
       setSelectedFile(file.name);
+      fileInput.value = ''; // Limpar o valor do elemento de entrada de arquivo
       const result = await parseCSV(file);
       if (result) {
         setData(result);
@@ -74,7 +89,16 @@ export default function Home() {
               accept=".csv"
               onChange={handleFileUpload}
             />
-            <p>{selectedFile ? selectedFile : 'Nenhum arquivo selecionado!'}</p>
+            <div className={styles.container_file_name}>
+              {selectedFile ? (
+                <>
+                  <p>{selectedFile}</p>
+                  <BsTrash onClick={clean} />
+                </>
+              ) : (
+                <p>Nenhum arquivo selecionado!</p>
+              )}
+            </div>
           </div>
           <button disabled={disableButtonValidate} onClick={validateData}>
             Validar dados

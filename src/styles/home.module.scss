@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 7rem;
+  flex-direction: column;
 
   p {
     padding-top: 0.3rem;
@@ -18,7 +18,7 @@
     color: #fff;
     cursor: pointer;
     margin: 10px;
-    padding: 6px 20px;
+    padding: 8px 20px;
     height: 40px;
     width: 200px;
     border: none;
@@ -68,5 +68,19 @@
   &:disabled {
     background-color: #919191;
     cursor: auto;
+  }
+}
+
+.container_file_name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding-top: 5px;
+
+  svg {
+    color: red;
+    font-size: 0.9rem;
+    cursor: pointer;
   }
 }
