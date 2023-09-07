@@ -10,3 +10,8 @@ export interface ValidateOutput {
   new_price: number;
   error: string[];
 }
+
+export interface UpdateData {
+  code: number;
+  variation: number;
+}

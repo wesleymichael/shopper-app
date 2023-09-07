@@ -1,5 +1,5 @@
 import { ProductInput, ValidateOutput } from "@/types/productsInput";
-import { validateProducts } from "@/services/productsApi";
+import * as server from "@/services/productsApi";
 import styles from '@/styles/home.module.scss';
 import { parseCSV } from "@/utils/parseCSV";
 import { useState } from "react";
@@ -14,9 +14,9 @@ export default function Home() {
   const [disableButtonUpdate, setDisabledButtonUpdate] = useState(true);
 
   async function validateData() {
-    const result = await validateProducts(data) as ValidateOutput[];
+    const result = await server.validateProducts(data) as ValidateOutput[];
     setOutputValidate(result);
-    
+
     result.forEach((product) => {
       if(product.error.length > 0) {
         return;
@@ -26,7 +26,17 @@ export default function Home() {
   }
 
   async function updateData() {
-    //TODO
+    const data = outputValidate.map((product) => ({
+      code: product.code,
+      variation: product.new_price / product.current_price,
+    }));
+    console.log(data);
+    await server.updateProducts(data);
+    alert('Atualizado com sucesso');
+    try {
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
