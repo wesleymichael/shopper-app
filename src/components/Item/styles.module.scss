@@ -1,0 +1,25 @@
+.custom_table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  margin: 2rem;
+}
+
+.custom_table th {
+  background-color: #67b980;
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+  font-weight: bold;
+}
+
+.custom_table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+  background-color: #edf7eb;
+}
+
+.error_row td {
+  background-color: #f1d8d8;
+}

@@ -1,18 +1,20 @@
-import { ProductInput } from "@/types/productsInput";
-import { parseCSV } from "@/utils/parseCSV";
-import Head from "next/head";
-import { useEffect, useState } from "react";
-import styles from '@/styles/home.module.scss';
+import { ProductInput, ValidateOutput } from "@/types/productsInput";
 import { validateProducts } from "@/services/productsApi";
+import styles from '@/styles/home.module.scss';
+import { parseCSV } from "@/utils/parseCSV";
+import { useState } from "react";
+import Head from "next/head";
+import { RenderItems } from "@/components/Item";
 
 export default function Home() {
+  const [outputValidate, setOutputValidate] = useState<ValidateOutput[]>([]);
   const [data, setData] = useState<ProductInput[]>([]);
   const [selectedFile, setSelectedFile] = useState('');
   const [disableButton, setDisabledButton] = useState(true);
 
   async function validateData() {
     const result = await validateProducts(data);
-    console.log(result);
+    setOutputValidate(result);
   }
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,7 +24,6 @@ export default function Home() {
       setSelectedFile(file.name);
       const result = await parseCSV(file);
       if (result) {
-        console.log(result)
         setData(result);
         setDisabledButton(false);
       }
@@ -53,6 +54,12 @@ export default function Home() {
           <button disabled={disableButton} onClick={validateData}>
             Validar dados
           </button>
+        </div>
+        
+        <div className={styles.custom_products_container}>
+          {outputValidate.length !== 0 && (
+            <RenderItems outputValidate={outputValidate} />
+          )}
         </div>
       </main>
     </>
